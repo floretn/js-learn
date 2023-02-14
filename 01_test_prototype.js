@@ -21,7 +21,7 @@ const person = { //new Object({code})
 const lena = Object.create(person)
 lena.name = 'Lena' //name есть и у Лены и у персона (макс)
 
-//const str = 'String'
-const str = new String('string')
+// const str = 'String'
+// const str = new String('string')
 
 
