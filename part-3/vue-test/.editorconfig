@@ -14,7 +14,7 @@
 # charset = utf-8
 
 # 4 space indentation
-[*.vue]
+[{*.vue, *.css}]
 indent_style = space
 indent_size = 2
 

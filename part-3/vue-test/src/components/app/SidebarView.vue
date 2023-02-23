@@ -4,8 +4,9 @@
       v-for="link in links"
       :key="link.url"
       :to="link.url"
-      active-class="active"
-      exact
+      :exact="link.exact"
+      :router-link-exact-active="link.url"
+      exact-active-class="active"
     >
       <li>
         <a href="#" class="waves-effect waves-orange pointer">{{link.title}}</a>
