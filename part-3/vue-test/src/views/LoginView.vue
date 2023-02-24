@@ -7,7 +7,7 @@
           id="email"
           type="text"
           v-model.trim="email"
-          :class="{invalid: ($v.email.$dirty && $v.email.required) || ($v.email.$dirty && $v.email.email)}"
+          :class="{invalid: (v$.email.$dirty && v$.email.required) || (v$.email.$dirty && v$.email.email)}"
         >
         <label for="email">Email</label>
         <small class="helper-text invalid">Email</small>
@@ -42,21 +42,27 @@
 </template>
 
 <script>
-import {email, required, minLength} from "vuelidate/lib/validators";
+import useVuelidate from '@vuelidate/core'
+import { required, email, minLength } from '@vuelidate/validators'
 export default {
   name: 'loginView',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data: () => ({
     email: '',
     password: ''
   }),
-  validations: {
-    email: {email, required},
-    password: {required, minLength: minLength(6)}
+  validations() {
+    return {
+      email: {email, required},
+      password: {required, minLength: minLength(6)}
+    }
   },
   methods: {
     submitHandler() {
-      if (this.$v.$invalid) {
-        this.$v.$touch()
+      if (this.v$.$invalid) {
+        this.v$.$touch()
         return
       }
       this.$router.push('/')
