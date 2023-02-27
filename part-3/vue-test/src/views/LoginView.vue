@@ -7,19 +7,42 @@
           id="email"
           type="text"
           v-model.trim="email"
-          :class="{invalid: (v$.email.$dirty && v$.email.required) || (v$.email.$dirty && v$.email.email)}"
+          :class="{invalid: (v$.email.$dirty && v$.email.required.$invalid) || (v$.email.$dirty && v$.email.email.$invalid)}"
         >
         <label for="email">Email</label>
-        <small class="helper-text invalid">Email</small>
+        <small
+          class="helper-text invalid"
+          v-if="(v$.email.$dirty && v$.email.required.$invalid)"
+        >
+          Поле Email не должно быть пустым!
+        </small>
+        <small
+          class="helper-text invalid"
+          v-else-if="(v$.email.$dirty && v$.email.email.$invalid)"
+        >
+          Введите корректный Email!
+        </small>
       </div>
       <div class="input-field">
         <input
           id="password"
           type="password"
-          class="validate"
+          v-model="password"
+          :class="{invalid: (v$.password.$dirty && v$.password.required.$invalid) || (v$.password.$dirty && v$.password.minLength.$invalid)}"
         >
         <label for="password">Пароль</label>
-        <small class="helper-text invalid">Password</small>
+        <small
+          class="helper-text invalid"
+          v-if="(v$.password.$dirty && v$.password.required.$invalid)"
+        >
+          Введите пароль!
+        </small>
+        <small
+          class="helper-text invalid"
+          v-else-if="(v$.password.$dirty && v$.password.minLength.$invalid)"
+        >
+          Пароль длинной {{password.length}} слишком короткий! Минимальная длинна пароля: {{v$.password.minLength.$params.min}}
+        </small>
       </div>
     </div>
     <div class="card-action">
@@ -44,6 +67,8 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
+import messages from "@/utils/messages";
+
 export default {
   name: 'loginView',
   setup () {
@@ -56,7 +81,12 @@ export default {
   validations() {
     return {
       email: {email, required},
-      password: {required, minLength: minLength(6)}
+      password: {required, minLength: minLength(9)}
+    }
+  },
+  mounted() {
+    if (messages[this.$route.query.message]) {
+      this.$message(messages[this.$route.query.message])
     }
   },
   methods: {
@@ -65,6 +95,11 @@ export default {
         this.v$.$touch()
         return
       }
+      const formData = {
+        email: this.email,
+        password: this.password
+      }
+      console.log(formData)
       this.$router.push('/')
     }
   }
