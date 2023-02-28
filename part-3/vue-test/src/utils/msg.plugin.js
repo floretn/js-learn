@@ -7,7 +7,7 @@ export default {
         }
         app.config.globalProperties.$error = function (htmlText) {
             // eslint-disable-next-line no-undef
-            M.toast({html: `Error: ${htmlText}`})
+            M.toast({html: `Ошибка: ${htmlText}`})
         }
     }
 }

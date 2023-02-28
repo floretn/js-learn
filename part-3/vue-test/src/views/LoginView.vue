@@ -81,7 +81,7 @@ export default {
   validations() {
     return {
       email: {email, required},
-      password: {required, minLength: minLength(9)}
+      password: {required, minLength: minLength(6)}
     }
   },
   mounted() {
@@ -90,17 +90,20 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if (this.v$.$invalid) {
         this.v$.$touch()
         return
       }
-      const formData = {
-        email: this.email,
-        password: this.password
+      try {
+        await this.$store.dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+        this.$router.push('/')
+      } catch (e) {
+        // console.error(e)
       }
-      console.log(formData)
-      this.$router.push('/')
     }
   }
 }

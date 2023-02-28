@@ -83,7 +83,7 @@
         <button
           class="btn waves-effect waves-light auth-submit"
           type="submit"
-          :class="{disabled: agreeBox}"
+          :class="{disabled: !agreeBox}"
         >
           Зарегистрироваться
           <i class="material-icons right">send</i>
@@ -120,18 +120,21 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if (this.v$.$invalid) {
         this.v$.$touch()
         return
       }
-      const formData = {
-        email: this.email,
-        password: this.password,
-        nameUser: this.nameUser
+      try {
+        await this.$store.dispatch('register', {
+          email: this.email,
+          password: this.password,
+          nameUser: this.nameUser
+        })
+        this.$router.push('/')
+      } catch (e) {
+        // console.error(e)
       }
-      console.log(formData)
-      this.$router.push('/')
     }
   }
 }
