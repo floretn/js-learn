@@ -5,6 +5,7 @@ import store from './store'
 import './registerServiceWorker'
 import 'materialize-css/dist/js/materialize.min'
 import messagePlugin from '@/utils/msg.plugin'
+import Loader from "@/components/app/Loader.vue"
 
 import * as firebase from "firebase/app"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
@@ -24,7 +25,12 @@ let app = false
 
 onAuthStateChanged(getAuth(), () => {
     if (!app) {
-        createApp(App).use(store).use(router).use(messagePlugin).mount('#app')
+        createApp(App)
+            .use(store)
+            .use(router)
+            .use(messagePlugin)
+            .component('Loader', Loader)
+            .mount('#app')
         app = true
     }
 })

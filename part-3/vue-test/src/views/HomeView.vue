@@ -3,50 +3,57 @@
     <div class="page-title">
       <h3>Счет</h3>
 
-      <button class="btn waves-effect waves-light btn-small">
+      <button class="btn waves-effect waves-light btn-small" @click="refresh">
         <i class="material-icons">refresh</i>
       </button>
     </div>
 
-    <div class="row">
-      <div class="col s12 m6 l4">
-        <div class="card light-blue bill-card">
-          <div class="card-content white-text">
-            <span class="card-title">Счет в валюте</span>
+    <Loader v-if="loading"/>
 
-            <p class="currency-line">
-              <span>12.0 Р</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col s12 m6 l8">
-        <div class="card orange darken-3 bill-card">
-          <div class="card-content white-text">
-            <div class="card-header">
-              <span class="card-title">Курс валют</span>
-            </div>
-            <table>
-              <thead>
-              <tr>
-                <th>Валюта</th>
-                <th>Курс</th>
-                <th>Дата</th>
-              </tr>
-              </thead>
-
-              <tbody>
-              <tr>
-                <td>руб</td>
-                <td>12121</td>
-                <td>12.12.12</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+    <div v-else class="row">
+      <HomeBill
+        :rates="currency.rates"
+      />
+      <HomeCurrency
+        :rates="currency.rates"
+        :date="currency.date"
+      />
     </div>
   </div>
 </template>
+
+<script>
+import HomeBill from "@/components/HomeBill.vue"
+import HomeCurrency from "@/components/HomeCurrency.vue"
+import Loader from "@/components/app/Loader.vue"
+import dateFormatter from "@/filters/date.filter"
+export default {
+  name: 'homeView',
+  data: () => ({
+    loading: true,
+    currency: null
+  }),
+  async mounted() {
+    // Сорян, но эти чуваки из fixer-а теперь дают только 100 запросов / месяц по бесплатному тарифу.
+    // Идут лесом, fetch я делать и без них умею, а валюты пусть примерные будут.
+    // this.currency = await this.$store.dispatch('fetchCurrency')
+    // Если кто не понял, то здесь я делаю задержку, чтобы сэмулировать задержку времени из-за запроса к сайту fixer.io.
+    // fixer - сайт, для получения курса валют (в currency кладу объект, который пришёл бы с этого сайта).
+    // TODO: сделать это под конец, когда останется 100 запросов чисто потестить приложуху целиком:))))
+    setTimeout(() => this.loading = false, 1500)
+    this.currency = {rates: {EUR: 1, USD: 1.2, RUB: 75}, date: dateFormatter(new Date())}
+  },
+  methods: {
+    async refresh() {
+      this.loading = true
+      // this.currency = await this.$store.dispatch('fetchCurrency')
+      setTimeout(() => this.loading = false, 1500)
+      this.currency = {rates: {EUR: 1, USD: 1.2, RUB: 75}, date: dateFormatter(new Date())}
+    }
+  },
+  components: {
+    Loader,
+    HomeBill, HomeCurrency
+  }
+}
+</script>

@@ -16,7 +16,7 @@
             data-target="dropdown"
             ref="dropdown"
           >
-            USER NAME
+            {{name ? name : 'Anonymous'}}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -55,7 +55,11 @@ export default {
     },
     dateFormatter
   },
-  //Выполняется только после инициализации всего  DOM-дерева
+  computed: {
+    name() {
+      return this.$store.getters.info.name
+    }
+  },
   mounted() {
     this.interval = setInterval(() => {
       this.date = new Date()
