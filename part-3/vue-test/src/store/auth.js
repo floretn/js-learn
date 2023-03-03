@@ -19,7 +19,8 @@ export default {
             try {
                 await createUserWithEmailAndPassword(getAuth(), email, password)
                 const uid = await dispatch('getUid')
-                await set(ref(getDatabase(),`/user/${uid}/info`), {
+                console.log(uid)
+                await set(ref(getDatabase(),`/users/${uid}/info`), {
                     bill: 10000,
                     name: nameUser
                 })

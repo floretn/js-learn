@@ -27,6 +27,7 @@ import HomeBill from "@/components/HomeBill.vue"
 import HomeCurrency from "@/components/HomeCurrency.vue"
 import Loader from "@/components/app/Loader.vue"
 import dateFormatter from "@/filters/date.filter"
+
 export default {
   name: 'homeView',
   data: () => ({
