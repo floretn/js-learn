@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import M from 'materialize-css';
-import dateFormatter from "@/filters/date.filter";
+import M from 'materialize-css'
+import dateFormatter from "@/filters/date.filter"
 export default {
   data: () => ({
     date: new Date(),

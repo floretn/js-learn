@@ -1,16 +1,18 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from "@/router"
 import store from './store'
 import './registerServiceWorker'
 import 'materialize-css/dist/js/materialize.min'
 import messagePlugin from '@/utils/msg.plugin'
 import Loader from "@/components/app/Loader.vue"
-import tooltipDirective from "@/directives/tooltip.directive";
+import tooltipDirective from "@/directives/tooltip.directive"
+import Paginate from 'vuejs-paginate-next'
 
 import * as firebase from "firebase/app"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 require('firebase/database')
+
 
 firebase.initializeApp({
     apiKey: "AIzaSyDWaqSNsbZWEO6VNW1n6DYNwLSEtB-fkY0",
@@ -32,6 +34,7 @@ onAuthStateChanged(getAuth(), () => {
             .use(messagePlugin)
             .directive('tooltip', tooltipDirective.tooltip)
             .component('Loader', Loader)
+            .component('Paginate', Paginate)
             .mount('#app')
         app = true
     }

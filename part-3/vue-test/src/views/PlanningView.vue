@@ -8,7 +8,7 @@
     <Loader v-if="loading"/>
 
     <p class="center" v-else-if="!categories.length">
-      Категорий пока нет. <router-link to="/categories">Добавить новую категорию</router-link>
+      Категорий пока нет. <router-link to="/categories">Добавить новую категорию...</router-link>
     </p>
 
     <section v-else>
@@ -53,7 +53,6 @@ export default {
         .reduce((total, record) => total + +record.amount, 0)
       const percent = 100 * spend / category.limit
       const progressPercent = percent > 100 ? 100 : percent
-      console.log(progressPercent)
       const progressColor = percent < 60
         ? 'green'
         : percent < 100
