@@ -4,7 +4,7 @@
     <div class="app-main-layout" v-else>
 
       <Navbar @clickA="isOpen = !isOpen" />
-      <Sidebar v-bind:isOpen="isOpen" />
+      <Sidebar v-bind:isOpen="isOpen" :key="locale"/>
 
       <main class="app-content" :class="{full: !isOpen}">
         <div class="app-page">
@@ -13,7 +13,7 @@
       </main>
 
       <div class="fixed-action-btn">
-        <router-link class="btn-floating btn-large blue" to="/record" v-tooltip="'Создать новую запись'">
+        <router-link class="btn-floating btn-large blue" to="/record" v-tooltip="localizeFilter('CreateRecord')">
           <i class="large material-icons">add</i>
         </router-link>
       </div>
@@ -26,6 +26,7 @@
 import Navbar from "@/components/app/NavbarView.vue"
 import Sidebar from "@/components/app/SidebarView.vue"
 import messages from "@/utils/messages"
+import localizeFilter from "@/filters/localize.filter"
 
 export default {
   name: 'main-layout',
@@ -43,14 +44,21 @@ export default {
     Navbar, Sidebar
   },
   computed: {
+    locale() {
+      //Вообще, и без этого всё работает, но на версиях ниже 3-ей не меняется, по идее. Так что вот на всякий сделаю
+      return this.$store.getters.info.locale
+    },
     error() {
       return this.$store.getters.error
     }
   },
   watch: {
     error(fbError) {
-      this.$error(messages[fbError.code] || 'Внутренняя ошибка!')
+      this.$error(messages[fbError.code] || `${localizeFilter("Internal error")}!`)
     }
+  },
+  methods: {
+    localizeFilter
   }
 }
 </script>

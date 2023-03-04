@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Новая запись</h3>
+      <h3>{{localizeFilter('RecordTitle')}}</h3>
     </div>
 
     <Loader v-if="loading"/>
 
     <p class="center" v-else-if="!categories.length">
-      Категорий пока нет. <router-link to="/categories">Добавить новую категорию...</router-link>
+      {{localizeFilter('NoCategories')}}. <router-link to="/categories">{{localizeFilter('AddCategory')}}}...</router-link>
     </p>
 
     <form class="form" v-else @submit.prevent="submitHandler">
@@ -21,7 +21,7 @@
             {{ c.title }}
           </option>
         </select>
-        <label>Выберите категорию</label>
+        <label>{{localizeFilter('ChooseCategory')}}</label>
       </div>
 
       <p>
@@ -33,7 +33,7 @@
             value="income"
             v-model="type"
           />
-          <span>Доход</span>
+          <span>{{localizeFilter('Income')}}</span>
         </label>
       </p>
 
@@ -46,7 +46,7 @@
             value="outcome"
             v-model="type"
           />
-          <span>Расход</span>
+          <span>{{localizeFilter('Outcome')}}</span>
         </label>
       </p>
 
@@ -57,18 +57,18 @@
           v-model.number="amount"
           :class="{invalid: (v$.amount.$dirty && v$.amount.required.$invalid) || (v$.amount.$dirty && v$.amount.minValue.$invalid)}"
         >
-        <label for="amount">Сумма</label>
+        <label for="amount">{{localizeFilter('Sum')}}</label>
         <span
           v-if="v$.amount.$dirty && v$.amount.required.$invalid"
           class="helper-text invalid"
         >
-          Введите сумму!
+          {{localizeFilter('Enter sum')}}!
         </span>
         <span
           v-else-if="v$.amount.$dirty && v$.amount.minValue.$invalid"
           class="helper-text invalid"
         >
-          Сумма не может быть меньше {{ v$.amount.minValue.$params.min }}!
+          {{localizeFilter('MinValue')}}: {{ v$.amount.minValue.$params.min }}!
         </span>
       </div>
 
@@ -79,17 +79,17 @@
           v-model="description"
           :class="{invalid: v$.description.$dirty && v$.description.required.$invalid}"
         >
-        <label for="description">Описание</label>
+        <label for="description">{{localizeFilter('Description')}}</label>
         <span
           v-if="v$.description.$dirty && v$.description.required.$invalid"
           class="helper-text invalid"
         >
-          Введите описание!
+          {{localizeFilter('Enter description')}}!
         </span>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
-        Создать
+        {{localizeFilter('Create')}}
         <i class="material-icons right">send</i>
       </button>
     </form>
@@ -101,6 +101,7 @@ import Loader from "@/components/app/Loader.vue"
 import useVuelidate from "@vuelidate/core"
 import {minValue, required} from "@vuelidate/validators"
 import {mapGetters} from "vuex"
+import localizeFilter from "@/filters/localize.filter"
 
 export default {
   name: 'recordView',
@@ -151,6 +152,7 @@ export default {
     }
   },
   methods: {
+    localizeFilter,
     async submitHandler() {
       if (this.v$.$invalid) {
         this.v$.$touch()
@@ -169,12 +171,12 @@ export default {
             ? this.info.bill + this.amount
             : this.info.bill - this.amount
           await this.$store.dispatch('updateInfo', {bill: bill})
-          this.$message(`Запись успешно создана!`)
+          this.$message(`${localizeFilter('SuccessRecordCreate')}!`)
           this.v$.reset()
           this.amount = null
           this.description = ''
         } else {
-          this.$message(`Недостаточно средств на счёте (${this.amount - this.info.bill})!`)
+          this.$message(`${localizeFilter('NoEnoughMoney')} (${this.amount - this.info.bill})!`)
         }
       } catch (e) {
         console.error(e)

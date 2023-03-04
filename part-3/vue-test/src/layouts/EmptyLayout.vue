@@ -6,6 +6,7 @@
 
 <script>
 import messages from "@/utils/messages"
+import localizeFilter from "@/filters/localize.filter";
 export default {
   computed: {
     error() {
@@ -14,7 +15,7 @@ export default {
   },
   watch: {
     error(fbError) {
-      this.$error(messages[fbError.code] || 'Внутренняя ошибка!')
+      this.$error(messages[fbError.code] || `${localizeFilter("Internal error")}!`)
     }
   }
 }

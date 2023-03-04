@@ -2,7 +2,7 @@
   <div class="col s12 m6 l4">
     <div class="card light-blue bill-card">
       <div class="card-content white-text">
-        <span class="card-title">Счет в валюте</span>
+        <span class="card-title">{{localizeFilter('Currency account')}}</span>
 
         <p
           v-for="cur of currencies"
@@ -20,6 +20,8 @@
 
 <script>
 import currencyFilter from "@/filters/currency.filter"
+import localizeFilter from "@/filters/localize.filter"
+
 export default {
   props: ['rates'],
   data: () => ({
@@ -31,6 +33,7 @@ export default {
     }
   },
   methods: {
+    localizeFilter,
     getCurrency(currency) {
       return currencyFilter(Math.floor(this.base * this.rates[currency]), currency)
     }

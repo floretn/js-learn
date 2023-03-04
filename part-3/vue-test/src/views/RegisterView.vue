@@ -1,7 +1,7 @@
 <template>
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <span class="card-title">{{localizeFilter('Home accounting', getLocale())}}</span>
       <div class="input-field">
         <input
           id="email"
@@ -14,13 +14,13 @@
           class="helper-text invalid"
           v-if="(v$.email.$dirty && v$.email.required.$invalid)"
         >
-          Поле Email не должно быть пустым!
+          {{localizeFilter('Enter', getLocale())}} Email!
         </small>
         <small
           class="helper-text invalid"
           v-else-if="(v$.email.$dirty && v$.email.email.$invalid)"
         >
-          Введите корректный Email!
+          {{localizeFilter('Enter correct', getLocale())}} Email!
         </small>
       </div>
       <div class="input-field">
@@ -30,18 +30,18 @@
           v-model="password"
           :class="{invalid: (v$.password.$dirty && v$.password.required.$invalid) || (v$.password.$dirty && v$.password.minLength.$invalid)}"
         >
-        <label for="password">Пароль</label>
+        <label for="password">{{localizeFilter('Password', getLocale())}}</label>
         <small
           class="helper-text invalid"
           v-if="(v$.password.$dirty && v$.password.required.$invalid)"
         >
-          Введите пароль!
+          {{localizeFilter('Enter password', getLocale())}}
         </small>
         <small
           class="helper-text invalid"
           v-else-if="(v$.password.$dirty && v$.password.minLength.$invalid)"
         >
-          Пароль длинной {{password.length}} слишком короткий! Минимальная длинна пароля: {{v$.password.minLength.$params.min}}
+          {{localizeFilter('Min length', getLocale())}}: {{v$.password.minLength.$params.min}}
         </small>
       </div>
       <div class="input-field">
@@ -51,31 +51,31 @@
           v-model.trim="nameUser"
           :class="{invalid: (v$.nameUser.$dirty && v$.nameUser.required.$invalid) || (v$.nameUser.$dirty && v$.nameUser.minLength.$invalid)}"
         >
-        <label for="name">Имя</label>
+        <label for="name">{{localizeFilter('NameUser', getLocale())}}</label>
         <small
           class="helper-text invalid"
           v-if="(v$.nameUser.$dirty && v$.nameUser.required.$invalid)"
         >
-          Введите имя!
+          {{localizeFilter('MessageEnterName', getLocale())}}!
         </small>
         <small
           class="helper-text invalid"
           v-else-if="(v$.nameUser.$dirty && v$.nameUser.minLength.$invalid)"
         >
-          Имя длинной {{nameUser.length}} слишком короткое! Минимальная длинна имени: {{v$.nameUser.minLength.$params.min}}
+          {{localizeFilter('Min length', getLocale())}}: {{v$.nameUser.minLength.$params.min}}
         </small>
       </div>
       <p>
         <label>
           <input type="checkbox" v-model="agreeBox"/>
-          <span>С правилами согласен</span>
+          <span>{{localizeFilter('RulesAgree', getLocale())}}</span>
         </label>
       </p>
       <small
         class="helper-text invalid"
         v-if="(v$.agreeBox.$dirty && v$.agreeBox.checked.$invalid)"
       >
-        Необходимо согласиться с правилами!
+        {{localizeFilter('NeedAgree', getLocale())}}!
       </small>
     </div>
     <div class="card-action">
@@ -85,14 +85,23 @@
           type="submit"
           :class="{disabled: !agreeBox}"
         >
-          Зарегистрироваться
+          {{localizeFilter('Registration', getLocale())}}
           <i class="material-icons right">send</i>
         </button>
       </div>
       <p class="center">
-        Уже есть аккаунт?
-        <router-link :to="'/login'">Войти!</router-link>
+        {{localizeFilter('AccountExists', getLocale())}}?
+        <router-link :to="`/login?locale=${getLocale()}`">{{localizeFilter('Login', getLocale())}}!</router-link>
       </p>
+
+      <div class="switch">
+        <label>
+          English
+          <input type="checkbox" v-model="isRuLocale">
+          <span class="lever"></span>
+          Русский
+        </label>
+      </div>
     </div>
   </form>
 </template>
@@ -100,6 +109,9 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
+import localizeFilter from "@/filters/localize.filter"
+import {get} from "firebase/database";
+
 export default {
   name: 'registerView',
   setup () {
@@ -109,7 +121,8 @@ export default {
     email: '',
     password: '',
     nameUser: '',
-    agreeBox: false
+    agreeBox: false,
+    isRuLocale: true
   }),
   validations() {
     return {
@@ -120,6 +133,8 @@ export default {
     }
   },
   methods: {
+    get,
+    localizeFilter,
     async submitHandler() {
       if (this.v$.$invalid) {
         this.v$.$touch()
@@ -135,6 +150,9 @@ export default {
       } catch (e) {
         // console.error(e)
       }
+    },
+    getLocale() {
+      return this.isRuLocale ? 'ru-RU' : 'en-US'
     }
   }
 }

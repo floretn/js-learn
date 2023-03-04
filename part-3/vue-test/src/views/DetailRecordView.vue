@@ -3,9 +3,9 @@
     <Loader v-if="loading"/>
     <div v-else-if="record">
       <div class="breadcrumb-wrap">
-        <router-link :to="'/history'" class="breadcrumb">История</router-link>
+        <router-link :to="'/history'" class="breadcrumb">{{localizeFilter('HistoryTitle')}}</router-link>
         <a @click.prevent class="breadcrumb">
-          {{record.type === 'income' ? 'Доход' : 'Расход'}}
+          {{record.type === 'income' ? localizeFilter('Income') : localizeFilter('Outcome')}}
         </a>
       </div>
       <div class="row">
@@ -18,9 +18,9 @@
             class="card"
           >
             <div class="card-content white-text">
-              <p>Описание: {{record.description}}</p>
-              <p>Сумма: {{currencyFilter(record.amount)}}</p>
-              <p>Категория: {{record.categoryName}}</p>
+              <p>{{localizeFilter('Description')}}: {{record.description}}</p>
+              <p>{{localizeFilter('Sum')}}: {{currencyFilter(record.amount)}}</p>
+              <p>{{localizeFilter('Category')}}: {{record.categoryName}}</p>
               <small>{{dateFormatter(Date.parse(record.date), 'datetime')}}</small>
             </div>
           </div>
@@ -35,10 +35,11 @@
 import Loader from "@/components/app/Loader.vue"
 import currencyFilter from "../filters/currency.filter"
 import dateFormatter from "../filters/date.filter"
+import localizeFilter from "@/filters/localize.filter"
 
 export default {
   name: 'detailsRecordView',
-  methods: {dateFormatter, currencyFilter},
+  methods: {dateFormatter, currencyFilter, localizeFilter},
   components: {Loader},
   data: () => ({
     loading: true,

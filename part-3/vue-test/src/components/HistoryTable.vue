@@ -3,11 +3,11 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Сумма</th>
-        <th>Дата</th>
-        <th>Категория</th>
-        <th>Тип</th>
-        <th>Открыть</th>
+        <th>{{localizeFilter('Sum')}}</th>
+        <th>{{localizeFilter('Date')}}</th>
+        <th>{{localizeFilter('Category')}}</th>
+        <th>{{localizeFilter('Type')}}</th>
+        <th>{{localizeFilter('Open')}}</th>
       </tr>
     </thead>
 
@@ -29,7 +29,7 @@
           <button
             class="btn-small btn"
             @click="$router.push(`/detail-record/${record.id}`)"
-            v-tooltip="'Посмотреть запись'"
+            v-tooltip="localizeFilter('Open record')"
           >
             <i class="material-icons">open_in_new</i>
           </button>
@@ -41,7 +41,9 @@
 
 <script>
 import currencyFilter from "@/filters/currency.filter"
-import dateFormatter from "@/filters/date.filter";
+import dateFormatter from "@/filters/date.filter"
+import localizeFilter from "@/filters/localize.filter"
+
 export default {
   props: {
     records: {
@@ -50,7 +52,7 @@ export default {
     }
   },
   methods: {
-    currencyFilter, dateFormatter
+    currencyFilter, dateFormatter, localizeFilter
   }
 }
 </script>

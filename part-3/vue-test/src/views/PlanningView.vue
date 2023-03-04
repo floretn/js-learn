@@ -1,21 +1,21 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Планирование</h3>
-      <h4>{{getMoney(info.bill)}}</h4>
+      <h3>{{localizeFilter('PlanningTitle')}}</h3>
+      <h4>{{currencyFilter(info.bill)}}</h4>
     </div>
 
     <Loader v-if="loading"/>
 
     <p class="center" v-else-if="!categories.length">
-      Категорий пока нет. <router-link to="/categories">Добавить новую категорию...</router-link>
+      {{localizeFilter('NoCategories')}}. <router-link to="/categories">{{localizeFilter('AddCategory')}}}...</router-link>
     </p>
 
     <section v-else>
       <div v-for="category in categories" :key="category.id">
         <p style="font-size: 16px">
           <strong>{{category.title}}:</strong>
-          {{getMoney(category.spend)}} из {{getMoney(category.limit)}}
+          {{currencyFilter(category.spend)}} {{localizeFilter('from')}} {{currencyFilter(category.limit)}}
         </p>
         <div class="progress" v-tooltip="category.tooltip">
           <div
@@ -30,9 +30,10 @@
 </template>
 
 <script>
-import Loader from "@/components/app/Loader.vue";
+import Loader from "@/components/app/Loader.vue"
 import {mapGetters} from "vuex"
 import currencyFilter from "@/filters/currency.filter"
+import localizeFilter from "@/filters/localize.filter"
 
 export default {
   name: 'planingView',
@@ -59,7 +60,7 @@ export default {
           ? 'yellow'
           : 'red'
       const tooltipValue = category.limit - spend
-      const tooltip = `${tooltipValue < 0 ? 'Превышение на' : 'Осталось'} ${this.getMoney(Math.abs(tooltipValue))}`
+      const tooltip = `${tooltipValue < 0 ? localizeFilter('Exceeding by') : localizeFilter('Left')} ${this.currencyFilter(Math.abs(tooltipValue))}`
       return {
         ...category,
         progressPercent,
@@ -71,9 +72,8 @@ export default {
     this.loading = false
   },
   methods: {
-    getMoney(moneyNumber) {
-      return currencyFilter(moneyNumber)
-    }
+    localizeFilter,
+    currencyFilter
   }
 }
 </script>

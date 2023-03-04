@@ -9,23 +9,27 @@
       exact-active-class="active"
     >
       <li>
-        <a href="#" class="waves-effect waves-orange pointer">{{link.title}}</a>
+        <a href="#" class="waves-effect waves-orange pointer">{{localizeFilter(link.title)}}</a>
       </li>
     </router-link>
   </ul>
 </template>
 
 <script>
+import localizeFilter from "@/filters/localize.filter"
 export default {
   props: ['isOpen'],
   data: () => ({
     links: [
-      {title: 'Счет', url: '/', exact: false},
-      {title: 'История', url: '/history'},
-      {title: 'Планирование', url: '/planning'},
-      {title: 'Новая запись', url: '/record'},
-      {title: 'Категории', url: '/categories'}
+      {title: 'AccountTitle', url: '/', exact: false},
+      {title: 'HistoryTitle', url: '/history'},
+      {title: 'PlanningTitle', url: '/planning'},
+      {title: 'RecordTitle', url: '/record'},
+      {title: 'CategoryTitle', url: '/categories'}
     ]
-  })
+  }),
+  methods: {
+    localizeFilter
+  }
 }
 </script>

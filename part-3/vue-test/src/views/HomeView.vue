@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Счет</h3>
+      <h3>{{localizeFilter('AccountTitle')}}</h3>
 
       <button class="btn waves-effect waves-light btn-small" @click="refresh">
         <i class="material-icons">refresh</i>
@@ -27,6 +27,7 @@ import HomeBill from "@/components/HomeBill.vue"
 import HomeCurrency from "@/components/HomeCurrency.vue"
 import Loader from "@/components/app/Loader.vue"
 import dateFormatter from "@/filters/date.filter"
+import localizeFilter from "@/filters/localize.filter"
 
 export default {
   name: 'homeView',
@@ -45,6 +46,7 @@ export default {
     this.currency = {rates: {EUR: 1, USD: 1.2, RUB: 75}, date: dateFormatter(new Date())}
   },
   methods: {
+    localizeFilter,
     async refresh() {
       this.loading = true
       // this.currency = await this.$store.dispatch('fetchCurrency')

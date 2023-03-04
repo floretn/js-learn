@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Категории</h3>
+      <h3>{{localizeFilter('CategoryTitle')}}</h3>
     </div>
     <section>
       <Loader v-if="loading"/>
@@ -14,7 +14,7 @@
           :key="categories.length + updateCount"
           @updated="updateCategory"
         />
-        <p v-else class="center">Категорий пока не создано</p>
+        <p v-else class="center">{{localizeFilter('NoCategories')}}</p>
       </div>
     </section>
   </div>
@@ -23,7 +23,9 @@
 <script>
 import CategoryCreate from "@/components/CategoryCreate.vue"
 import CategoryEdit from "@/components/CategoryEdit.vue"
-import Loader from "@/components/app/Loader.vue";
+import Loader from "@/components/app/Loader.vue"
+import localizeFilter from "@/filters/localize.filter"
+
 export default {
   data: () => ({
     categories: [],
@@ -36,6 +38,7 @@ export default {
   },
   components: {Loader, CategoryEdit, CategoryCreate},
   methods: {
+    localizeFilter,
     addNewCategory(category) {
       this.categories.push(category)
     },

@@ -16,20 +16,20 @@
             data-target="dropdown"
             ref="dropdown"
           >
-            {{name ? name : 'Anonymous'}}
+            {{name ? name : localizeFilter('Anonymous')}}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
           <ul id='dropdown' class='dropdown-content'>
             <li>
               <router-link :to="'/profile'" class="black-text">
-                <i class="material-icons">account_circle</i>Профиль
+                <i class="material-icons">account_circle</i>{{localizeFilter("ProfileTitle")}}
               </router-link>
             </li>
             <li class="divider" tabindex="-1"></li>
             <li>
               <a href="#" class="black-text" @click.prevent="logout">
-                <i class="material-icons">assignment_return</i>Выйти
+                <i class="material-icons">assignment_return</i>{{localizeFilter("LogoutTitle")}}
               </a>
             </li>
           </ul>
@@ -42,6 +42,7 @@
 <script>
 import M from 'materialize-css'
 import dateFormatter from "@/filters/date.filter"
+import localizeFilter from "@/filters/localize.filter"
 export default {
   data: () => ({
     date: new Date(),
@@ -49,9 +50,10 @@ export default {
     dropdown: null
   }),
   methods: {
+    localizeFilter,
     async logout() {
       this.$store.dispatch('logout')
-      this.$router.push('/login?message=logout')
+      this.$router.push(`/login?message=logout&locale=${this.$store.getters.info.locale}`)
     },
     dateFormatter
   },
