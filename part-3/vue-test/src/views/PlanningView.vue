@@ -8,7 +8,7 @@
     <Loader v-if="loading"/>
 
     <p class="center" v-else-if="!categories.length">
-      {{localizeFilter('NoCategories')}}. <router-link to="/categories">{{localizeFilter('AddCategory')}}}...</router-link>
+      {{localizeFilter('NoCategories')}}. <router-link to="/categories">{{localizeFilter('AddCategory')}}...</router-link>
     </p>
 
     <section v-else>
