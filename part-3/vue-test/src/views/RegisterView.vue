@@ -46,6 +46,21 @@
       </div>
       <div class="input-field">
         <input
+          id="passwordConfirmed"
+          type="password"
+          v-model="passwordConfirmed"
+          :class="{invalid: password !== passwordConfirmed}"
+        >
+        <label for="passwordConfirmed">{{localizeFilter('Confirm password')}}</label>
+        <small
+          class="helper-text invalid"
+          v-if="password !== passwordConfirmed"
+        >
+          {{localizeFilter('Passwords don\'t match')}}
+        </small>
+      </div>
+      <div class="input-field">
+        <input
           id="name"
           type="text"
           v-model.trim="nameUser"
@@ -127,6 +142,7 @@ export default {
   data: () => ({
     email: '',
     password: '',
+    passwordConfirmed: '',
     nameUser: '',
     agreeBox: false,
     isRuLocale: true
@@ -152,7 +168,7 @@ export default {
     get,
     localizeFilter,
     async submitHandler() {
-      if (this.v$.$invalid) {
+      if (this.v$.$invalid || this.password !== this.passwordConfirmed) {
         this.v$.$touch()
         return
       }

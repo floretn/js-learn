@@ -55,6 +55,8 @@
   "NoEnoughMoney": "Недостаточно средств на счёте",
   "NoRecords": "Записей пока нет",
   "CreateRecord": "Создать новую запись",
+  "Passwords don't match": "Пароли не совпадают",
+  "Confirm password": "Подтвердите пароль",
 
   "PlanningTitle": "Планирование",
   "Exceeding by": "Превышение на",
