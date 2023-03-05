@@ -135,7 +135,6 @@ export default {
     },
     setLocale() {
       this.$store.commit('clearInfo')
-      console.log(this.getLocale())
       this.$store.commit('setInfo', {locale: this.getLocale()})
       this.cookies.set('locale', this.getLocale())
     },
