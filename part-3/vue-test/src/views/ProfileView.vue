@@ -90,6 +90,7 @@ export default {
         if (locale !== this.cookies.get('locale')) {
           this.cookies.set('locale', locale)
         }
+        document.title = `${localizeFilter('ProfileTitle')} | ${localizeFilter('Home accounting')}`
       } catch (e) {
         console.error(e)
       }

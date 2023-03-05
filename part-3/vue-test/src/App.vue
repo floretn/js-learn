@@ -1,6 +1,7 @@
 <template>
   <metainfo>
-    <template v-slot:title="{ content }">{{ content ? `${content}` : `${localizeFilter('Home accounting')}` }}</template>
+    <template v-slot:title="{ content }">{{ content ? `${content} | ${localizeFilter('Home accounting')}`
+      : `${localizeFilter('Home accounting')}` }}</template>
   </metainfo>
   <div id="app">
     <component :is="layout">
