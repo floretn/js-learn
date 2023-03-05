@@ -36,11 +36,17 @@ import Loader from "@/components/app/Loader.vue"
 import currencyFilter from "../filters/currency.filter"
 import dateFormatter from "../filters/date.filter"
 import localizeFilter from "@/filters/localize.filter"
+import {useMeta} from "vue-meta";
 
 export default {
   name: 'detailsRecordView',
   methods: {dateFormatter, currencyFilter, localizeFilter},
   components: {Loader},
+  setup() {
+    useMeta({
+      title: `${localizeFilter('Viewing record')}`
+    })
+  },
   data: () => ({
     loading: true,
     record: null

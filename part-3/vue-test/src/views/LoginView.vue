@@ -80,10 +80,14 @@ import { required, email, minLength } from '@vuelidate/validators'
 import messages from "@/utils/messages"
 import localizeFilter from "@/filters/localize.filter"
 import { useCookies } from "vue3-cookies"
+import {useMeta} from "vue-meta";
 
 export default {
   name: 'loginView',
   setup () {
+    useMeta({
+      title: `${localizeFilter('Login', document.cookie.includes('locale=en-US') ? 'en-US' : 'ru-RU')}`
+    })
     const {cookies} = useCookies()
     return {v$: useVuelidate(), cookies}
   },
@@ -140,6 +144,10 @@ export default {
     },
     getLocale() {
       return this.isRuLocale ? 'ru-RU' : 'en-US'
+    },
+    getLocaleFromCookie() {
+      console.log('Tut')
+      return this.cookies.get('locale')
     }
   }
 }

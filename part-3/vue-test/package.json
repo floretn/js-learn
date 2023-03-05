@@ -17,6 +17,7 @@
     "materialize-css": "^1.0.0-rc.2",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.13",
+    "vue-meta": "^3.0.0-alpha.7",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.0.3",
     "vue3-cookies": "^1.0.6",

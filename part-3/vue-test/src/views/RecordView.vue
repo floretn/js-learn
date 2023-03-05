@@ -102,11 +102,15 @@ import useVuelidate from "@vuelidate/core"
 import {minValue, required} from "@vuelidate/validators"
 import {mapGetters} from "vuex"
 import localizeFilter from "@/filters/localize.filter"
+import {useMeta} from "vue-meta";
 
 export default {
   name: 'recordView',
   components: {Loader},
   setup() {
+    useMeta({
+      title: `${localizeFilter('RecordTitle')}`
+    })
     return {v$: useVuelidate()}
   },
   data: () => ({

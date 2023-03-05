@@ -25,8 +25,14 @@ import CategoryCreate from "@/components/CategoryCreate.vue"
 import CategoryEdit from "@/components/CategoryEdit.vue"
 import Loader from "@/components/app/Loader.vue"
 import localizeFilter from "@/filters/localize.filter"
+import {useMeta} from "vue-meta";
 
 export default {
+  setup() {
+    useMeta({
+      // title: `${localizeFilter('CategoryTitle')}`
+    })
+  },
   data: () => ({
     categories: [],
     loading: true,

@@ -1,4 +1,7 @@
 <template>
+  <metainfo>
+    <template v-slot:title="{ content }">{{ content ? `${content}` : `${localizeFilter('Home accounting')}` }}</template>
+  </metainfo>
   <div id="app">
     <component :is="layout">
       <router-view/>
@@ -7,9 +10,17 @@
 </template>
 
 <script>
-import EmptyLayout from "@/layouts/EmptyLayout.vue";
-import MainLayout from "@/layouts/MainLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue"
+import MainLayout from "@/layouts/MainLayout.vue"
+import { useMeta } from 'vue-meta'
+import localizeFilter from "@/filters/localize.filter"
+
 export default {
+  setup () {
+    useMeta({
+      title: ''
+    })
+  },
   computed: {
     layout() {
       return (this.$route.meta.layout || 'empty') + '-layout'
@@ -17,7 +28,8 @@ export default {
   },
   components: {
     EmptyLayout, MainLayout
-  }
+  },
+  methods: {localizeFilter}
 }
 </script>
 

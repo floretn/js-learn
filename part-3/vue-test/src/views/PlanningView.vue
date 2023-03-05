@@ -34,10 +34,16 @@ import Loader from "@/components/app/Loader.vue"
 import {mapGetters} from "vuex"
 import currencyFilter from "@/filters/currency.filter"
 import localizeFilter from "@/filters/localize.filter"
+import {useMeta} from "vue-meta";
 
 export default {
   name: 'planingView',
   components: {Loader},
+  setup() {
+    useMeta({
+      title: `${localizeFilter('PlanningTitle')}`
+    })
+  },
   data: () => ({
     loading: true,
     categories: []

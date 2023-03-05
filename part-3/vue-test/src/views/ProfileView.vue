@@ -44,10 +44,14 @@ import {required} from "@vuelidate/validators"
 import useVuelidate from "@vuelidate/core"
 import localizeFilter from "@/filters/localize.filter"
 import {useCookies} from "vue3-cookies"
+import {useMeta} from 'vue-meta'
 
 export default {
   name: 'profileView',
   setup () {
+    useMeta({
+      title: `${localizeFilter('ProfileTitle')}`
+    })
     const {cookies} = useCookies()
     return {v$: useVuelidate(), cookies}
   },

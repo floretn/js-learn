@@ -35,12 +35,18 @@ import paginationMixin from "@/mixins/pagination.mixin"
 import {DoughnutChart, useDoughnutChart} from "vue-chart-3"
 import {Chart, registerables} from "chart.js"
 import localizeFilter from "@/filters/localize.filter"
+import {useMeta} from "vue-meta";
 
 Chart.register(...registerables);
 
 export default {
   name: 'historyView',
   mixins: [paginationMixin],
+  setup() {
+    useMeta({
+      title: `${localizeFilter('HistoryTitle')}`
+    })
+  },
   data: () => ({
     loading: true,
     records: [],

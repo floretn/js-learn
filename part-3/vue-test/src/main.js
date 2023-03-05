@@ -8,6 +8,7 @@ import messagePlugin from '@/utils/msg.plugin'
 import Loader from "@/components/app/Loader.vue"
 import tooltipDirective from "@/directives/tooltip.directive"
 import Paginate from 'vuejs-paginate-next'
+import {createMetaManager} from "vue-meta"
 
 import * as firebase from "firebase/app"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
@@ -25,16 +26,18 @@ firebase.initializeApp({
 
 let app = false
 
-onAuthStateChanged(getAuth(), () => {
+onAuthStateChanged(getAuth(), async () => {
     if (!app) {
-        createApp(App)
+        const vueApp = createApp(App)
             .use(store)
             .use(router)
             .use(messagePlugin)
+            .use(createMetaManager())
             .directive('tooltip', tooltipDirective.tooltip)
             .component('Loader', Loader)
             .component('Paginate', Paginate)
-            .mount('#app')
+        await router.isReady()
+        vueApp.mount('#app')
         app = true
     }
 })

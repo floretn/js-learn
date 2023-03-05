@@ -5,7 +5,14 @@
 
 <script>
 import localizeFilter from "@/filters/localize.filter"
+import {useMeta} from "vue-meta";
+
 export default {
+  setup() {
+    useMeta({
+      title: `${localizeFilter('Page not found')}`
+    })
+  },
   methods: {localizeFilter}
 }
 </script>

@@ -113,10 +113,14 @@ import localizeFilter from "@/filters/localize.filter"
 import {get} from "firebase/database"
 import {useCookies} from "vue3-cookies"
 import messages from "@/utils/messages"
+import {useMeta} from "vue-meta";
 
 export default {
   name: 'registerView',
   setup () {
+    useMeta({
+      title: `${localizeFilter('Registration')}`
+    })
     const {cookies} = useCookies()
     return {v$: useVuelidate(), cookies}
   },

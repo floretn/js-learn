@@ -28,9 +28,15 @@ import HomeCurrency from "@/components/HomeCurrency.vue"
 import Loader from "@/components/app/Loader.vue"
 import dateFormatter from "@/filters/date.filter"
 import localizeFilter from "@/filters/localize.filter"
+import {useMeta} from "vue-meta";
 
 export default {
   name: 'homeView',
+  setup() {
+    useMeta({
+      title: `${localizeFilter('Bill')}`
+    })
+  },
   data: () => ({
     loading: true,
     currency: null
