@@ -23,6 +23,7 @@
   "Enter password": "Введите пароль",
   "No account": "Нет аккаунта",
   "Registration": "Регистрация",
+  "Error": "Ошибка",
 
   "LogoutTitle": "Выйти",
 
@@ -69,5 +70,12 @@
 
   "RulesAgree": "С правилами согласен",
   "NeedAgree": "Необходимо согласиться с правилами",
-  "AccountExists": "Уже есть аккаунт"
+  "AccountExists": "Уже есть аккаунт",
+
+  "LogoutMessage": "Вы вышли из аккаунта",
+  "NeedLoginMessage": "Для доступа к системе необходима авторизация",
+  "NoSuchEmailMessage": "Пользователь с таким email не найден",
+  "Invalid password": "Неверный пароль",
+  "SuchEmailExistsMsg": "Такой email уже зарегестрирован в системе"
+
 }

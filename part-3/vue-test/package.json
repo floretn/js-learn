@@ -19,6 +19,7 @@
     "vue": "^3.2.13",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.0.3",
+    "vue3-cookies": "^1.0.6",
     "vuejs-paginate-next": "^1.0.2",
     "vuex": "^4.0.0"
   },

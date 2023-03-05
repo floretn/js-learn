@@ -28,5 +28,11 @@
 
   "RulesAgree": "Agree with the rules",
   "NeedAgree": "It is necessary to agree with the rules",
-  "AccountExists": "Already have an account"
+  "AccountExists": "Already have an account",
+
+  "LogoutMessage": "You have logged out of your account",
+  "NeedLoginMessage": "Authorization is required to access the system",
+  "NoSuchEmailMessage": "The user with this email was not found",
+  "SuchEmailExistsMsg": "This email is already registered in the system"
+
 }

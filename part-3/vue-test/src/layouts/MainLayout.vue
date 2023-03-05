@@ -27,6 +27,7 @@ import Navbar from "@/components/app/NavbarView.vue"
 import Sidebar from "@/components/app/SidebarView.vue"
 import messages from "@/utils/messages"
 import localizeFilter from "@/filters/localize.filter"
+import {useCookies} from "vue3-cookies"
 
 export default {
   name: 'main-layout',
@@ -34,9 +35,17 @@ export default {
     isOpen: true,
     loading: true
   }),
+  setup () {
+    const {cookies} = useCookies()
+    return {cookies}
+  },
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
       await this.$store.dispatch('fetchInfo')
+      const locale = this.$store.getters.info.locale
+      if (locale !== this.cookies.get('locale')) {
+        this.cookies.set('locale', locale)
+      }
     }
     this.loading = false
   },

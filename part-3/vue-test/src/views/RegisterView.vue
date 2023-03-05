@@ -1,7 +1,7 @@
 <template>
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
-      <span class="card-title">{{localizeFilter('Home accounting', getLocale())}}</span>
+      <span class="card-title">{{localizeFilter('Home accounting')}}</span>
       <div class="input-field">
         <input
           id="email"
@@ -14,13 +14,13 @@
           class="helper-text invalid"
           v-if="(v$.email.$dirty && v$.email.required.$invalid)"
         >
-          {{localizeFilter('Enter', getLocale())}} Email!
+          {{localizeFilter('Enter')}} Email!
         </small>
         <small
           class="helper-text invalid"
           v-else-if="(v$.email.$dirty && v$.email.email.$invalid)"
         >
-          {{localizeFilter('Enter correct', getLocale())}} Email!
+          {{localizeFilter('Enter correct')}} Email!
         </small>
       </div>
       <div class="input-field">
@@ -30,18 +30,18 @@
           v-model="password"
           :class="{invalid: (v$.password.$dirty && v$.password.required.$invalid) || (v$.password.$dirty && v$.password.minLength.$invalid)}"
         >
-        <label for="password">{{localizeFilter('Password', getLocale())}}</label>
+        <label for="password">{{localizeFilter('Password')}}</label>
         <small
           class="helper-text invalid"
           v-if="(v$.password.$dirty && v$.password.required.$invalid)"
         >
-          {{localizeFilter('Enter password', getLocale())}}
+          {{localizeFilter('Enter password')}}
         </small>
         <small
           class="helper-text invalid"
           v-else-if="(v$.password.$dirty && v$.password.minLength.$invalid)"
         >
-          {{localizeFilter('Min length', getLocale())}}: {{v$.password.minLength.$params.min}}
+          {{localizeFilter('Min length')}}: {{v$.password.minLength.$params.min}}
         </small>
       </div>
       <div class="input-field">
@@ -51,31 +51,31 @@
           v-model.trim="nameUser"
           :class="{invalid: (v$.nameUser.$dirty && v$.nameUser.required.$invalid) || (v$.nameUser.$dirty && v$.nameUser.minLength.$invalid)}"
         >
-        <label for="name">{{localizeFilter('NameUser', getLocale())}}</label>
+        <label for="name">{{localizeFilter('NameUser')}}</label>
         <small
           class="helper-text invalid"
           v-if="(v$.nameUser.$dirty && v$.nameUser.required.$invalid)"
         >
-          {{localizeFilter('MessageEnterName', getLocale())}}!
+          {{localizeFilter('MessageEnterName')}}!
         </small>
         <small
           class="helper-text invalid"
           v-else-if="(v$.nameUser.$dirty && v$.nameUser.minLength.$invalid)"
         >
-          {{localizeFilter('Min length', getLocale())}}: {{v$.nameUser.minLength.$params.min}}
+          {{localizeFilter('Min length')}}: {{v$.nameUser.minLength.$params.min}}
         </small>
       </div>
       <p>
         <label>
           <input type="checkbox" v-model="agreeBox"/>
-          <span>{{localizeFilter('RulesAgree', getLocale())}}</span>
+          <span>{{localizeFilter('RulesAgree')}}</span>
         </label>
       </p>
       <small
         class="helper-text invalid"
         v-if="(v$.agreeBox.$dirty && v$.agreeBox.checked.$invalid)"
       >
-        {{localizeFilter('NeedAgree', getLocale())}}!
+        {{localizeFilter('NeedAgree')}}!
       </small>
     </div>
     <div class="card-action">
@@ -85,19 +85,19 @@
           type="submit"
           :class="{disabled: !agreeBox}"
         >
-          {{localizeFilter('Registration', getLocale())}}
+          {{localizeFilter('Registration')}}
           <i class="material-icons right">send</i>
         </button>
       </div>
       <p class="center">
-        {{localizeFilter('AccountExists', getLocale())}}?
-        <router-link :to="`/login?locale=${getLocale()}`">{{localizeFilter('Login', getLocale())}}!</router-link>
+        {{localizeFilter('AccountExists')}}?
+        <router-link :to="'/login'">{{localizeFilter('Login')}}!</router-link>
       </p>
 
       <div class="switch">
         <label>
           English
-          <input type="checkbox" v-model="isRuLocale">
+          <input type="checkbox" v-model="isRuLocale" v-on:click="changeLocale">
           <span class="lever"></span>
           Русский
         </label>
@@ -108,14 +108,17 @@
 
 <script>
 import useVuelidate from '@vuelidate/core'
-import { required, email, minLength } from '@vuelidate/validators'
+import {required, email, minLength} from '@vuelidate/validators'
 import localizeFilter from "@/filters/localize.filter"
-import {get} from "firebase/database";
+import {get} from "firebase/database"
+import {useCookies} from "vue3-cookies"
+import messages from "@/utils/messages"
 
 export default {
   name: 'registerView',
   setup () {
-    return { v$: useVuelidate() }
+    const {cookies} = useCookies()
+    return {v$: useVuelidate(), cookies}
   },
   data: () => ({
     email: '',
@@ -132,6 +135,15 @@ export default {
       agreeBox: {checked: v => v}
     }
   },
+  mounted() {
+    let locale = this.cookies.get('locale')
+    if (locale === null) {
+      locale = 'ru-RU'
+      alert(messages['usingCookie'])
+    }
+    this.isRuLocale = locale !== 'en-US'
+    this.setLocale()
+  },
   methods: {
     get,
     localizeFilter,
@@ -144,12 +156,22 @@ export default {
         await this.$store.dispatch('register', {
           email: this.email,
           password: this.password,
-          nameUser: this.nameUser
+          nameUser: this.nameUser,
+          locale: this.getLocale()
         })
         this.$router.push('/')
       } catch (e) {
         // console.error(e)
       }
+    },
+    changeLocale() {
+      this.isRuLocale = !this.isRuLocale
+      this.setLocale()
+    },
+    setLocale() {
+      this.$store.commit('clearInfo')
+      this.$store.commit('setInfo', {locale: this.getLocale()})
+      this.cookies.set('locale', this.getLocale())
     },
     getLocale() {
       return this.isRuLocale ? 'ru-RU' : 'en-US'

@@ -13,7 +13,6 @@ import * as firebase from "firebase/app"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 require('firebase/database')
 
-
 firebase.initializeApp({
     apiKey: "AIzaSyDWaqSNsbZWEO6VNW1n6DYNwLSEtB-fkY0",
     authDomain: "vue-test-92026.firebaseapp.com",

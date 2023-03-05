@@ -1,7 +1,10 @@
 export default {
-    'logout': 'Вы вышли из аккаунта!',
-    'login': 'Для доступа к системе необходима авторизация!',
-    'auth/user-not-found': 'Пользователь с таким email не найден!',
-    'auth/wrong-password': 'Неверный пароль!',
-    'auth/email-already-in-use': 'Такой email уже зарегестрирован в системе!'
+    'logout': 'LogoutMessage',
+    'login': 'NeedLoginMessage',
+    'auth/user-not-found': 'NoSuchEmailMessage',
+    'auth/wrong-password': 'Invalid password',
+    'auth/email-already-in-use': 'SuchEmailExistsMsg',
+    'usingCookie': 'Данный сайт использует куки-файлы. Оставаясь на нём, вы подтверждаете своё согласие на их использование.' +
+        '\nThis website uses cookies. By staying on it, you confirm your consent to their use.'
+
 }

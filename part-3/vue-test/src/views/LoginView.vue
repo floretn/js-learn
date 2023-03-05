@@ -1,5 +1,5 @@
 <template>
-  <form class="card auth-card" @submit.prevent="submitHandler" :key="isRuLocale">
+  <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
       <span class="card-title">{{localizeFilter('Home accounting', getLocale())}}</span>
       <div class="input-field">
@@ -58,14 +58,14 @@
 
       <p class="center">
         {{localizeFilter('No account', getLocale())}}?
-        <router-link :to="`/register?locale=${getLocale()}`">{{localizeFilter('Registration', getLocale())}}</router-link>
+        <router-link :to="'/register'">{{localizeFilter('Registration', getLocale())}}</router-link>
       </p>
 
 
       <div class="switch">
         <label>
           English
-          <input type="checkbox" v-model="isRuLocale" v-on:click="updateTextFields">
+          <input type="checkbox" v-model="isRuLocale" v-on:click="changeLocale">
           <span class="lever"></span>
           Русский
         </label>
@@ -79,11 +79,13 @@ import useVuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 import messages from "@/utils/messages"
 import localizeFilter from "@/filters/localize.filter"
+import { useCookies } from "vue3-cookies"
 
 export default {
   name: 'loginView',
   setup () {
-    return { v$: useVuelidate() }
+    const {cookies} = useCookies()
+    return {v$: useVuelidate(), cookies}
   },
   data: () => ({
     email: '',
@@ -96,14 +98,19 @@ export default {
       password: {required, minLength: minLength(6)}
     }
   },
+  created() {
+    let locale = this.cookies.get('locale')
+    if (locale === null) {
+      locale = 'ru-RU'
+      alert(messages['usingCookie'])
+    }
+    this.isRuLocale = locale !== 'en-US'
+    this.setLocale()
+  },
   mounted() {
     if (messages[this.$route.query.message]) {
       this.$message(messages[this.$route.query.message])
     }
-    const locale = this.$route.query.locale
-    console.log(locale)
-    //Такая сложная проверка потому, что может прийти непонятно что...
-    this.isRuLocale = locale !== undefined ? locale !== 'en-US' : true
   },
   methods: {
     localizeFilter,
@@ -122,15 +129,15 @@ export default {
         // console.error(e)
       }
     },
-    updateTextFields() {
-      //Если не сделать так с паролем и мэйлом, то текстовые поля не апдейтаются почему-то....
-      //На странице регистрации всё норм
-      const email = this.email
-      const password = this.password
-      this.email = email
-      this.password = password
-      // eslint-disable-next-line no-undef
-      setTimeout(() => M.updateTextFields(), 0)
+    changeLocale() {
+      this.isRuLocale = !this.isRuLocale
+      this.setLocale()
+    },
+    setLocale() {
+      this.$store.commit('clearInfo')
+      console.log(this.getLocale())
+      this.$store.commit('setInfo', {locale: this.getLocale()})
+      this.cookies.set('locale', this.getLocale())
     },
     getLocale() {
       return this.isRuLocale ? 'ru-RU' : 'en-US'

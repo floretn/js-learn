@@ -7,6 +7,9 @@ const locales = {
     'en-US': en
 }
 
+/*
+ * Параметр locale только ради страницы логина, потому что store не успевает прогреться, как я понимаю
+ */
 export default function localizeFilter(key, locale = store.getters.info.locale || 'ru-RU') {
     return locales[locale][key] || `${key}`
 }

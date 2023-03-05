@@ -6,7 +6,8 @@ import record from "@/store/record"
 
 export default createStore({
   state: {
-    error: null
+    error: null,
+    locale: 'ru-RU'
   },
   getters: {
     error: s => s.error

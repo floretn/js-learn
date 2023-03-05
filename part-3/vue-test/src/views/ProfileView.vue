@@ -43,11 +43,13 @@ import {mapActions, mapGetters} from "vuex"
 import {required} from "@vuelidate/validators"
 import useVuelidate from "@vuelidate/core"
 import localizeFilter from "@/filters/localize.filter"
+import {useCookies} from "vue3-cookies"
 
 export default {
   name: 'profileView',
   setup () {
-    return { v$: useVuelidate() }
+    const {cookies} = useCookies()
+    return {v$: useVuelidate(), cookies}
   },
   data: () => ({
     nameUser: '',
@@ -76,10 +78,14 @@ export default {
         return
       }
       try {
+        const locale = this.isRuLocale ? 'ru-RU' : 'en-US'
         await this.updateInfo({
           name: this.nameUser,
-          locale: this.isRuLocale ? 'ru-RU' : 'en-US'
+          locale: locale
         })
+        if (locale !== this.cookies.get('locale')) {
+          this.cookies.set('locale', locale)
+        }
       } catch (e) {
         console.error(e)
       }
